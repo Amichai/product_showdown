@@ -11,3 +11,8 @@ export const handler = async(event) => {
   };
   return response;
 };
+
+
+/// TODO: 
+// Database that we can use to display charts
+/// Endpoint for scraping urls and writing to that database (with local testing)

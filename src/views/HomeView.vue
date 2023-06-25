@@ -7,10 +7,16 @@
   const allLinksSet = ref(false)
 
   const addProductLink = () => {
+    if(!canAddLink.value) {
+      return
+    }
+
     productLinks.value.push({ url: ''})
     allLinksSet.value = false
   }
   
+
+  /// TODO: validate that these are real urls
 
   const onUrlChanged = () => {
     allLinksSet.value = productLinks.value.filter(val => !val.url).length === 0
@@ -19,6 +25,22 @@
   const canAddLink = computed(() => {
     return allLinksSet.value && productLinks.value.length < 5;
   })
+
+  const canNotDeleteUrl = (idx) => {
+    return idx === 0 && productLinks.value.length === 1
+  }
+
+  const deleteClick = (idx) => {
+    console.log('AA')
+    if (canNotDeleteUrl(idx)) {
+      return
+    }
+
+    console.log('BB')
+    console.log(idx)
+    productLinks.value.splice(idx, 1)
+    onUrlChanged()
+  }
 
   const props = defineProps({
   })
@@ -39,17 +61,20 @@
     <div class="wrapper flow">
       <h1>Product Battle ⚔️</h1>
       <div v-for="(link, idx) in productLinks" :key="idx" class="product-link">
-        {{ idx }}.
+        {{ idx + 1 }}.
         <input
           type="text"
           class="input"
           v-focus
-          :placeholder="`Product link ${idx + 1}`"
+          :placeholder="`Product link`"
           v-model="productLinks[idx].url"
           @input="onUrlChanged"
         />
 
-        <a class="delete-link">
+        <a 
+          :class="[canNotDeleteUrl(idx) && 'link-disabled', 'delete-link']"
+          @click="(evt) => deleteClick(idx)"
+        >
           <span class="material-symbols-outlined">
             delete
           </span>
@@ -59,7 +84,8 @@
      
 
       <div class="add-link">
-        <a @click="addProductLink" :disabled="!canAddLink">
+        <a @click="addProductLink" 
+          :class="[!canAddLink && 'link-disabled']">
           <span class="material-symbols-outlined plus-icon">
             add_circle
           </span>
@@ -87,12 +113,18 @@
 }
 
 .product-link {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1rem 1fr 1rem;
   gap: 0.8rem;
   align-items: center;
 }
 
 .delete-link {
   align-self: end;
+}
+
+.link-disabled {
+  color: gray;
+  cursor: inherit;
 }
 </style>

@@ -4,11 +4,12 @@
 
 :root {
   --clr-text: #20180e;
-  --clr-background: hsl(34, 39%, 93%);
-  --clr-background-accent: hsl(0, 0%, 98%);
+  /* --clr-background: hsl(34, 39%, 93%); */
+  --clr-background: white
+  --clr-background-accent: hsl(185, 61%, 35%);
   --clr-text-background: hsl(255, 4%, 19%);
   --clr-primary: #658cbd;
-  --clr-secondary: ##eee4d8;
+  --clr-secondary: hsl(185, 100%, 23%);;
   --clr-accent: #395984;
 
   --ff-accent: 'Lora', serif;
@@ -162,8 +163,22 @@ h3 {
 .button {
   font-size: var(--fs-0);
   padding: 0.5rem 1rem;
+  padding-right: 1.3rem;
+  /* background: #006973; */
+  color: white;
+  border-radius: 3rem;
+  vertical-align: text-top;
+
+  border-width: 0;
 }
 
 a {
   cursor: pointer;
+}
+
+.product-column {
+  width: 20rem;
+  background-color: rgba(0, 105, 115, .11);
+  border-radius: 0.3rem;
+  
 }

@@ -1,46 +1,23 @@
 <script setup>
   import { ref, computed } from 'vue'
   import LoadingDialog from '../components/LoadingDialog.vue'
+  import Header from '../components/Header.vue'
+  import EditableText from '../components/EditableText.vue'
+  import ProductColumn from '../components/ProductColumn.vue'
+  import EmptyProductColumn from '../components/EmptyProductColumn.vue'
 
-  const productLinks = ref([{ url: '' }])
+  const productColumns = ref([{ 
+    url: 'https://www.codeofbell.com/products/x-type-backpack',
+    name: 'Code of Bell X-Type Backpack',
+    features: {
+      'Material': 'Leather',
+      'Color': 'Black',
+      'Size': 'Medium',
+      'Price': '$1,000',
+      'img': 'https://cdn.shopify.com/s/files/1/1971/3525/products/X-TYPE_01-01_a0c5704a-a47b-4e07-823c-b2efc11c403a_1296x.jpg?v=1685538532'
+    }
+    }])
   const isLoading = ref(false)
-  const allLinksSet = ref(false)
-
-  const addProductLink = () => {
-    if(!canAddLink.value) {
-      return
-    }
-
-    productLinks.value.push({ url: ''})
-    allLinksSet.value = false
-  }
-  
-
-  /// TODO: validate that these are real urls
-
-  const onUrlChanged = () => {
-    allLinksSet.value = productLinks.value.filter(val => !val.url).length === 0
-  }
-
-  const canAddLink = computed(() => {
-    return allLinksSet.value && productLinks.value.length < 5;
-  })
-
-  const canNotDeleteUrl = (idx) => {
-    return idx === 0 && productLinks.value.length === 1
-  }
-
-  const deleteClick = (idx) => {
-    console.log('AA')
-    if (canNotDeleteUrl(idx)) {
-      return
-    }
-
-    console.log('BB')
-    console.log(idx)
-    productLinks.value.splice(idx, 1)
-    onUrlChanged()
-  }
 
   const props = defineProps({
   })
@@ -58,42 +35,24 @@
     </div>
   </LoadingDialog>
   <main>
+    <Header />
     <div class="wrapper flow">
-      <h1>Product Battle ⚔️</h1>
-      <div v-for="(link, idx) in productLinks" :key="idx" class="product-link">
-        {{ idx + 1 }}.
-        <input
-          type="text"
-          class="input"
-          v-focus
-          :placeholder="`Product link`"
-          v-model="productLinks[idx].url"
-          @input="onUrlChanged"
-        />
-
-        <a 
-          :class="[canNotDeleteUrl(idx) && 'link-disabled', 'delete-link']"
-          @click="(evt) => deleteClick(idx)"
-        >
-          <span class="material-symbols-outlined">
-            delete
-          </span>
-        </a>
-
+      <div class="editable-text">
+        <EditableText />
       </div>
-     
-
-      <div class="add-link">
-        <a @click="addProductLink" 
-          :class="[!canAddLink && 'link-disabled']">
-          <span class="material-symbols-outlined plus-icon">
-            add_circle
-          </span>
-        </a>
+      <div class="product-columns">
+        <div 
+          v-for="column, index in productColumns" :key="index">
+            <ProductColumn 
+            :productColumn="column" 
+            />
+        </div>
+      <EmptyProductColumn />
       </div>
-      <button class="button" @click="battleClick">
-        Battle!
-      </button>
+
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      test
     
     </div>
   </main>
@@ -101,30 +60,16 @@
 </template>
 
 <style scoped>
-  .plus-icon {
-    font-size: 4rem;
-    padding-top: 0.18rem;
+  .product-columns {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
   }
 
-.add-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.product-link {
-  display: grid;
-  grid-template-columns: 1rem 1fr 1rem;
-  gap: 0.8rem;
-  align-items: center;
-}
-
-.delete-link {
-  align-self: end;
-}
-
-.link-disabled {
-  color: gray;
-  cursor: inherit;
+.editable-text {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 2.3rem;
 }
 </style>

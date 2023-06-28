@@ -14,8 +14,6 @@
 <template>
 <div class="product-column">
   <img src="src/assets/AddButton.png" alt="product image" class="product-image" @click="add">
-
-  <button class="button">Add your first champion here</button>
 </div>
 </template>
 

@@ -1,24 +1,40 @@
 <script setup>
-  import { ref } from 'vue'
-  import EditableText from '../components/EditableText.vue'
-  
-  const props = defineProps({
-    productColumn: {
-      type: Object,
-      required: true
-    }
-  })
+import { ref } from 'vue'
+import draggable from 'vuedraggable'
+import EditableText from '../components/EditableText.vue'
 
-  const emit = defineEmits([])
+const props = defineProps({
+  productColumn: {
+    type: Object,
+    required: true
+  }
+})
+
+const emit = defineEmits([])
 </script>
 
 <template>
-<div class="product-column">
-  <img :src="props.productColumn.features.img" alt="product image" class="product-image">
-  <div>
-    <EditableText :initialText="props.productColumn.name" />
+  <div class="product-column">
+    <img :src="props.productColumn.img" alt="product image" class="product-image" />
+
+    <div>
+      <EditableText :initialText="props.productColumn.name" />
+    </div>
+
+    <draggable
+      v-model="props.productColumn.features"
+      group="features"
+      @start="drag = true"
+      @end="drag = false"
+      item-key="id"
+    >
+      <template #item="{ element }">
+        <div>
+          {{ element }}
+        </div>
+      </template>
+    </draggable>
   </div>
-</div>
 </template>
 
 <style scoped>

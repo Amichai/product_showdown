@@ -6,6 +6,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/:guid',
+      props: true,
+      name: 'product-showdown',
+      component: HomeView
+    },
+    {
       path: '/',
       name: 'home',
       component: HomeView

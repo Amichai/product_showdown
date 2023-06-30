@@ -6,6 +6,10 @@
   
   const textValue = ref(props.initialText)
 
+  watch(() => props.initialText, (newValue) => {
+    textValue.value = newValue
+  })
+
   const props = defineProps({
     initialText: {
       type: String,
@@ -13,7 +17,7 @@
     }
   })
 
-  const emit = defineEmits([])
+  const emit = defineEmits(['textChanged'])
 
   const setEditing = (value) => {
     isEditing.value = value
@@ -23,6 +27,8 @@
       nextTick(() => {
         inputRef.value.focus()
       })
+    } else {
+      emit('textChanged', textValue.value)
     }
   }
   
@@ -65,7 +71,7 @@
 </script>
 
 <template>
-  <div v-if="!isEditing" @click="() => setEditing(true)">
+  <div v-if="!isEditing" @click="() => setEditing(true)" class="text-label">
     {{ textValue }}
   </div>
   <div>
@@ -85,5 +91,8 @@
   min-width: 1em;
   width: var(--js-size);
   text-align: center;
+}
+
+.text-label {
 }
 </style>

@@ -1,73 +1,53 @@
 <script setup>
-  import { ref, computed } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import LoadingDialog from '../components/LoadingDialog.vue'
   import Header from '../components/Header.vue'
   import EditableText from '../components/EditableText.vue'
   import ProductColumn from '../components/ProductColumn.vue'
   import EmptyProductColumn from '../components/EmptyProductColumn.vue'
+  import { queryShowdown, updateShowdown } from '../apiHelper.js';
 
-  const productColumns = ref([
-  {
-    url: 'https://www.codeofbell.com/products/x-type-backpack',
-    name: 'Code of Bell X-Type Backpack',
-    img: 'https://cdn.shopify.com/s/files/1/1971/3525/products/X-TYPE_01-01_a0c5704a-a47b-4e07-823c-b2efc11c403a_1296x.jpg?v=1685538532',
-    features: [
-      {
-        id: 1,
-        key: 'Material',
-        value: 'Leather'
-      },
-      {
-        id: 2,
-        key: 'Color',
-        value: 'Black'
-      },
-      {
-        id: 3,
-        key: 'Size',
-        value: 'Medium'
-      },
-      {
-        id: 4,
-        key: 'Price',
-        value: '$1,000'
-        },
-    ]},
-  {
-    url: 'https://www.codeofbell.com/products/x-type-backpack',
-    name: 'Code of Bell X-Type Backpack',
-    img: 'https://cdn.shopify.com/s/files/1/1971/3525/products/X-TYPE_01-01_a0c5704a-a47b-4e07-823c-b2efc11c403a_1296x.jpg?v=1685538532',
-    features: [
-      {
-        id: 1,
-        key: 'Material',
-        value: 'Leather'
-      },
-      {
-        id: 2,
-        key: 'Color',
-        value: 'Black'
-      },
-      {
-        id: 3,
-        key: 'Size',
-        value: 'Medium'
-      },
-      {
-        id: 4,
-        key: 'Price',
-        value: '$1,000'
-        },
-    ]},
-    ])
+  const productColumns = ref([])
+  const showdownName = ref('Untitled Showdown')
 
-  const rowOrder = ref(['Price', 'Size', 'Color', 'Material'])
+  onMounted(async () => {
+    console.log(props.guid)
+
+    const productBattle = await queryShowdown(props.guid)
+    const table = productBattle.table.S
+
+    productColumns.value = JSON.parse(decodeURIComponent(table))
+    showdownName.value = decodeURIComponent(productBattle.showdownName.S)
+    featureOrder.value = JSON.parse(decodeURIComponent(productBattle.featureOrder.S))
+
+    console.log(showdownName.value)
+  })
+
+  const featureOrder = ref(['Price', 'Size', 'Color', 'Material'])
   const isLoading = ref(false)
 
   const props = defineProps({
+    guid: {
+      type: String,
+      required: false
+    }
   })
 
+  const showdownNameUpdated = (val) => {
+    console.log('showdownNameUpdated', val)
+    updateShowdown(props.guid, val, productColumns.value, featureOrder.value)
+  }
+
   const emit = defineEmits([])
+
+  const orderChanged = (ord) => {
+    featureOrder.value = ord
+    updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
+  }
+
+  const featureChanged = () => {
+    updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
+  }
 </script>
 
 <template>
@@ -83,15 +63,18 @@
     <Header />
     <div class="wrapper flow">
       <div class="editable-text">
-        <EditableText />
+        <EditableText :initialText="showdownName" 
+          @textChanged="showdownNameUpdated"
+        />
       </div>
       <div class="product-columns">
         <div 
           v-for="features, index in productColumns" :key="index">
             <ProductColumn
               :features="features"
-              :rowOrder="rowOrder"
-              @orderChanged="rowOrder = $event"
+              :rowOrder="featureOrder"
+              @orderChanged="orderChanged"
+              @featureChanged="featureChanged"
             />
         </div>
       <EmptyProductColumn />

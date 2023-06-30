@@ -16,7 +16,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['orderChanged'])
+const emit = defineEmits(['orderChanged', 'featureChanged'])
 
 const drag = ref(false)
 
@@ -35,6 +35,11 @@ const orderedFeatures = computed({
   }
 })
 
+const featureChanged = (keyValue) => {
+  const featureIndex = props.features.features.findIndex((feature) => feature.key === keyValue.key)
+  props.features.features[featureIndex].value = keyValue.value
+  emit('featureChanged', props.features)
+}
 </script>
 
 <template>
@@ -58,6 +63,7 @@ const orderedFeatures = computed({
         <div>
           <ProductFeature 
             :feature="element"
+            @featureChanged="featureChanged"
           />
         </div>
       </template>

@@ -9,45 +9,39 @@
     }
   })
 
-  const emit = defineEmits([])
+  const emit = defineEmits(['featureChanged'])
 
 
   const mouseOver = (event) => {
-    console.log('mouseOver1')
     const dragIndicator = event.target.parentElement.querySelector('.drag-indicator')
-    dragIndicator?.classList?.toggle('hidden')
-    console.log('mouseOver2')
+    dragIndicator?.classList?.add('hidden')
   }
 
   const mouseOut = (event) => {
-    console.log('mouseOut1')
     const dragIndicator = event.target.parentElement.querySelector('.drag-indicator')
 
-    dragIndicator?.classList?.toggle('hidden')
-    console.log('mouseOut2')
+    dragIndicator?.classList?.remove('hidden')
   }
 
 </script>
 
 <template>
-<div class="product-feature"
-  
->
-<div class="hover-area"
-  @mouseover="mouseOver"
-  @mouseout="mouseOut"
->
-</div>
+<div class="product-feature">
+  <div class="hover-area"
+    @mouseover="mouseOver"
+    @mouseout="mouseOut"
+  />
   <div class="columns">
-      <span class="material-symbols-outlined drag-indicator">
+    <span class="material-symbols-outlined drag-indicator">
       drag_indicator
-      </span>
-
-  <div class="product-info"
-  >
+    </span>
+    <div class="product-info">
     {{ props.feature.key }}
     <div class="feature-value">
-      <EditableText :initialText="props.feature.value" />
+      <EditableText 
+      :initialText="props.feature.value" 
+      @textChanged="emit('featureChanged', { key: props.feature.key, value: $event })"
+      />
     </div>
     </div>
   </div>
@@ -63,6 +57,7 @@
 
 .feature-value {
   font-size: 2.5rem;
+  z-index: 10;
 }
 
 .columns {

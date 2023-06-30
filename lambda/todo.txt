@@ -7,7 +7,19 @@ zip -r lambdaFunc.zip .; aws lambda update-function-code --function-name AIBookW
 
  amplify publish   
 
- https://github.com/jamesturk/scrapeghost
 
  get the right font
  persist the data to db
+
+
+
+Website
+ uuid, url, extracted features, timestamp
+
+Battle
+ uuid, timestamp, websiteUUIDs, extractedFeatures, override features, hidden features
+
+ https://github.com/jamesturk/scrapeghost
+
+
+ https://martinfowler.com/articles/building-boba.html#templated-prompt

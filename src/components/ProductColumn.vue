@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import draggable from 'vuedraggable'
 import EditableText from '../components/EditableText.vue'
 import ProductFeature from '../components/ProductFeature.vue'
+import { v4 as uuidv4 } from 'uuid'
 
 const props = defineProps({
   features: {
@@ -46,8 +47,10 @@ const orderedFeatures = computed({
   <br>
     <draggable
       v-model="orderedFeatures"
-      group="features"
+      class="feature-list"
+      :group="uuidv4()"
       @start="drag = true"
+      ghost-class="ghost"
       @end="drag = false"
       item-key="id"
     >
@@ -63,6 +66,10 @@ const orderedFeatures = computed({
 </template>
 
 <style scoped>
+.feature-list {
+  width: 100%;
+}
+
 .product-image {
   border: 3px solid white;
   width: 90%;
@@ -74,5 +81,10 @@ const orderedFeatures = computed({
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.ghost {
+  opacity: 0.5;
+  background-color: gray;
 }
 </style>

@@ -9,30 +9,39 @@
     }
   })
 
-  const emit = defineEmits(['featureChanged'])
+  const emit = defineEmits(['featureChanged', 'featureDeleted'])
 
 
   const mouseOver = (event) => {
-    const dragIndicator = event.target.parentElement.querySelector('.drag-indicator')
-    dragIndicator?.classList?.add('hidden')
+    const hoverIndicators = event.target.parentElement.querySelectorAll('.hover-indicator')
+    hoverIndicators.forEach((indicator) => {
+      indicator.classList.add('hidden')
+    })
   }
 
   const mouseOut = (event) => {
-    const dragIndicator = event.target.parentElement.querySelector('.drag-indicator')
+    const hoverIndicators = event.target.parentElement.querySelectorAll('.hover-indicator')
 
-    dragIndicator?.classList?.remove('hidden')
+    hoverIndicators.forEach((indicator) => {
+      indicator.classList.remove('hidden')
+    })
+  }
+
+  const deleteFeature = () => {
+    console.log('delete feature', props.feature)
+    emit('featureDeleted', props.feature)
   }
 
 </script>
 
 <template>
 <div class="product-feature">
-  <div class="hover-area"
+  <!-- <div class="hover-area"
     @mouseover="mouseOver"
     @mouseout="mouseOut"
-  />
+  /> -->
   <div class="columns">
-    <span class="material-symbols-outlined drag-indicator">
+    <span class="material-symbols-outlined hover-indicator">
       drag_indicator
     </span>
     <div class="product-info">
@@ -46,6 +55,9 @@
       />
     </div>
     </div>
+    <span class="material-symbols-outlined trash-icon" @click="deleteFeature">
+      delete
+    </span>
   </div>
 </div>
 </template>
@@ -81,7 +93,7 @@
   visibility:visible !important;
 }
 
-.drag-indicator {
+.hover-indicator {
   visibility:hidden;
   align-self: center;
 }
@@ -98,5 +110,11 @@
   font-weight: 700;
   font-size: var(--fs--1);
   color: #515E7D;
+}
+
+.trash-icon {
+  align-self: center;
+  cursor: pointer;
+  font-size: 1.3rem;
 }
 </style>

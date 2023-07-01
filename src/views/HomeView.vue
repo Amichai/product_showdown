@@ -19,6 +19,7 @@
     productColumns.value = JSON.parse(decodeURIComponent(table))
     showdownName.value = decodeURIComponent(productBattle.showdownName.S)
     featureOrder.value = JSON.parse(decodeURIComponent(productBattle.featureOrder.S))
+    ///TOOD: gaurantee uniqueness within featureOrder
 
     console.log(showdownName.value)
   })
@@ -49,11 +50,54 @@
     updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
   }
 
+  const featureDeleted = (feature) => {
+    // TODO
+    // const featureToRemove = featureOrder.value[featureIdx]
+
+
+    const idx = featureOrder.value.indexOf(feature.key)
+    featureOrder.value.splice(idx, 1)
+
+    productColumns.value.forEach((column, idx) => {
+      column.features = column.features.filter((f) => {
+        return f.id !== feature.id
+      })
+    })
+
+    updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
+
+
+  }
+
+  const featureAdded = (feature, targetIdx) => {
+    productColumns.value.forEach((column, idx) => {
+      if (idx === targetIdx) {
+        column.features.push({
+        id: column.features.length,
+        key: feature.key,
+        value: feature.value,
+      })
+      
+      } else {
+        column.features.push({
+          id: column.features.length,
+          key: feature.key,
+          value: '',
+        })
+      }
+    })
+
+    featureOrder.value.push(feature.key)
+
+    updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
+  }
+
   const championAdded = (champion) => {
+
     productColumns.value.push({
       url: '123',
       name: champion.name,
-      img: champion.imgUrl,
+      img: champion.imageUrl,
       features: featureOrder.value.map((feature, index) => {
         return {
           id: index,
@@ -62,7 +106,6 @@
         }
       })
     })
-    
     
     updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
   }
@@ -99,6 +142,8 @@
               @orderChanged="orderChanged"
               @featureChanged="featureChanged"
               @deleteColumn="() => deleteColumn(index)"
+              @featureAdded="(feature) => featureAdded(feature, index)"
+              @featureDeleted="featureDeleted"
             />
         </div>
       <EmptyProductColumn 

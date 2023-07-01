@@ -16,12 +16,31 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['orderChanged', 'featureChanged', 'deleteColumn'])
+const emit = defineEmits(['orderChanged', 'featureChanged', 'deleteColumn', 'featureAdded', 'featureDeleted'])
 
 const drag = ref(false)
 
+const heroStat = ref('')
+const heroStatValue = ref('')
+const isAddingStat = ref(false)
+
 const endDrag = () => {
   
+}
+
+const showAddStatArea = () => {
+  isAddingStat.value = true
+}
+
+const cancelAddStat = () => {
+  heroStat.value = ''
+  heroStatValue.value = ''
+  isAddingStat.value = false
+}
+
+const addStat = () => {
+  emit('featureAdded', { key: heroStat.value, value: heroStatValue.value })
+  cancelAddStat()
 }
 
 const orderedFeatures = computed({
@@ -36,14 +55,21 @@ const orderedFeatures = computed({
 })
 
 const featureChanged = (keyValue) => {
+  /// Potential bug – we need to do this find index on the feature id not the key
   const featureIndex = props.features.features.findIndex((feature) => feature.key === keyValue.key)
   props.features.features[featureIndex].value = keyValue.value
   emit('featureChanged', props.features)
 }
 
+const featureDeleted = (feature) => {
+  emit('featureDeleted', feature)
+}
+
 const deleteColumn = () => {
   emit('deleteColumn')
 }
+
+console.log(props.features)
 </script>
 
 <template>
@@ -68,12 +94,27 @@ const deleteColumn = () => {
           <ProductFeature 
             :feature="element"
             @featureChanged="featureChanged"
+            @featureDeleted="featureDeleted"
           />
         </div>
       </template>
     </draggable>
 
-    <a class="delete-button" @click="deleteColumn">
+    <div class="add-feature-area" v-if="isAddingStat">
+      <input class="input" placeholder="stat" v-model="heroStat" />
+      <input class="input" placeholder="value" v-model="heroStatValue" />
+      <div class="button-footer">
+        <button class="button" @click="cancelAddStat">Cancel</button>
+        <button class="button" @click="addStat">Add</button>
+      </div>
+    </div>
+
+    <a class="icon-button" @click="showAddStatArea">
+      <span class="material-symbols-outlined">
+        add_circle
+      </span>
+    </a>
+    <a class="icon-button" @click="deleteColumn">
       <span class="material-symbols-outlined">
         delete
       </span>
@@ -106,7 +147,32 @@ const deleteColumn = () => {
   background-color: gray;
 }
 
-.delete-button {
+.icon-button {
   cursor: pointer;
+}
+
+.add-feature-area {
+  padding: 1.5rem;
+  /* font-size: 1.0rem; */
+}
+
+.input {
+  font-size: 1.2rem;
+  margin: 0.1rem 0;
+}
+
+.button {
+  font-size: 1rem;
+  margin: 0.2rem;
+}
+
+.button:hover {
+  background-color: rgba(74, 99, 102, 0.7);
+}
+
+
+.button-footer {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

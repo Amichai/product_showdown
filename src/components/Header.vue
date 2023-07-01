@@ -34,7 +34,7 @@
   top: 0;
   font-size: 2.5rem;
   font-weight: 700;
-  line-height: 56px;
+  line-height: 2rem;
   letter-spacing: 0em;
   text-align: left;
   padding: 0.8rem 1rem 0.5rem 1rem;

@@ -6,12 +6,24 @@
   import ProductColumn from '../components/ProductColumn.vue'
   import EmptyProductColumn from '../components/EmptyProductColumn.vue'
   import { queryShowdown, updateShowdown } from '../apiHelper.js';
+  import { v4 as uuidv4 } from 'uuid'
+  import router from '@/router'
 
-  const productColumns = ref([])
+const productColumns = ref([])
   const showdownName = ref('Untitled Showdown')
 
   onMounted(async () => {
     console.log(props.guid)
+
+    if (props.guid.toLocaleLowerCase() === 'new') {
+      const newGuid = uuidv4()
+      await updateShowdown(newGuid, showdownName.value, [], [])
+      router.push({
+        path: `/${newGuid}`,
+      })
+
+      return
+    }
 
     const productBattle = await queryShowdown(props.guid)
     const table = productBattle.table.S
@@ -24,7 +36,7 @@
     console.log(showdownName.value)
   })
 
-  const featureOrder = ref(['Price', 'Size', 'Color', 'Material'])
+  const featureOrder = ref([])
   const isLoading = ref(false)
 
   const props = defineProps({
@@ -65,8 +77,6 @@
     })
 
     updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
-
-
   }
 
   const featureAdded = (feature, targetIdx) => {

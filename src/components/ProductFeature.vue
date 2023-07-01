@@ -36,7 +36,9 @@
       drag_indicator
     </span>
     <div class="product-info">
-    {{ props.feature.key }}
+      <div class="feature-key">
+      {{ props.feature.key }}
+      </div>
     <div class="feature-value">
       <EditableText 
       :initialText="props.feature.value" 
@@ -53,6 +55,7 @@
   text-align: center;
   cursor: grab;
   position: relative;
+  margin-bottom: 2rem;
 }
 
 .feature-value {
@@ -89,5 +92,11 @@
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+.feature-key {
+  font-weight: 700;
+  font-size: var(--fs--1);
+  color: #515E7D;
 }
 </style>

@@ -9,7 +9,7 @@
 
 <template>
   <div class="heading">
-    <div>
+    <div class="site-name">
     SHOWDOWN
     </div>
     <div>
@@ -45,9 +45,15 @@
 
 .share-button {
   vertical-align: center;
+  font-family: 'Sen', sans-serif;
+  font-weight: 700;
 }
 
 .material-symbols-outlined {
   vertical-align: bottom;
+}
+
+.site-name {
+  font-family: 'Righteous', cursive;
 }
 </style>

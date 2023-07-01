@@ -16,7 +16,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['orderChanged', 'featureChanged'])
+const emit = defineEmits(['orderChanged', 'featureChanged', 'deleteColumn'])
 
 const drag = ref(false)
 
@@ -39,6 +39,10 @@ const featureChanged = (keyValue) => {
   const featureIndex = props.features.features.findIndex((feature) => feature.key === keyValue.key)
   props.features.features[featureIndex].value = keyValue.value
   emit('featureChanged', props.features)
+}
+
+const deleteColumn = () => {
+  emit('deleteColumn')
 }
 </script>
 
@@ -68,7 +72,14 @@ const featureChanged = (keyValue) => {
         </div>
       </template>
     </draggable>
+
+    <a class="delete-button" @click="deleteColumn">
+      <span class="material-symbols-outlined">
+        delete
+      </span>
+    </a>
   </div>
+
 </template>
 
 <style scoped>
@@ -87,10 +98,15 @@ const featureChanged = (keyValue) => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 1rem;
 }
 
 .ghost {
   opacity: 0.5;
   background-color: gray;
+}
+
+.delete-button {
+  cursor: pointer;
 }
 </style>

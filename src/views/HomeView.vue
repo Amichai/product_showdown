@@ -48,6 +48,29 @@
   const featureChanged = () => {
     updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
   }
+
+  const championAdded = (champion) => {
+    productColumns.value.push({
+      url: '123',
+      name: champion.name,
+      img: champion.imgUrl,
+      features: featureOrder.value.map((feature, index) => {
+        return {
+          id: index,
+          key: feature,
+          value: '',
+        }
+      })
+    })
+    
+    
+    updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
+  }
+
+  const deleteColumn = (idx) => {
+    productColumns.value.splice(idx, 1)
+    updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
+  }
 </script>
 
 <template>
@@ -75,14 +98,15 @@
               :rowOrder="featureOrder"
               @orderChanged="orderChanged"
               @featureChanged="featureChanged"
+              @deleteColumn="() => deleteColumn(index)"
             />
         </div>
-      <EmptyProductColumn />
+      <EmptyProductColumn 
+        @championAdded="championAdded"
+      />
       </div>
 
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-      test
+      <br><br><br><br><br>
     
     </div>
   </main>

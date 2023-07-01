@@ -91,8 +91,11 @@
   min-width: 1em;
   width: var(--js-size);
   text-align: center;
+  font-family: var(--base);
 }
 
 .text-label {
+  min-height: 1em;
+  
 }
 </style>

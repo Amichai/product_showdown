@@ -57,8 +57,4 @@
   background-color: rgb(74, 99, 102);
   border-radius: 0.4rem;
 }
-
-.button:hover {
-  background-color: rgba(74, 99, 102, 0.7);
-}
 </style>

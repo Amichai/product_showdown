@@ -166,11 +166,6 @@ console.log(props.features)
   margin: 0.2rem;
 }
 
-.button:hover {
-  background-color: rgba(74, 99, 102, 0.7);
-}
-
-
 .button-footer {
   display: flex;
   justify-content: flex-end;

@@ -10,7 +10,9 @@
 <template>
   <div class="heading">
     <div class="site-name">
-    SHOWDOWN
+      <a href="/" class="home-link">
+        SHOWDOWN
+      </a>
     </div>
     <div>
     <button class="button">
@@ -55,5 +57,10 @@
 
 .site-name {
   font-family: 'Righteous', cursive;
+}
+
+.home-link {
+  color: white;
+  text-decoration: none;
 }
 </style>

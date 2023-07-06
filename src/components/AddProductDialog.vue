@@ -125,10 +125,6 @@ const clickDialog = (e) => {
   color: black;
 }
 
-.button:hover {
-  background-color: rgba(74, 99, 102, 0.7);
-}
-
 .input {
   font-size: var(--fs--1);
 }

@@ -9,12 +9,12 @@ const router = createRouter({
       path: '/:guid',
       props: true,
       name: 'product-showdown',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/about',

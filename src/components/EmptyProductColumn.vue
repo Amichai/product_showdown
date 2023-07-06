@@ -32,7 +32,7 @@
     @close="close"
     @championAdded="championAdded"
   />
-  <img src="src/assets/AddButton.png" alt="product image" class="product-image" @click="add">
+  <img src="@/assets/AddButton.png" alt="product image" class="product-image" @click="add">
 </div>
 </template>
 

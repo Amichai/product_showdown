@@ -139,7 +139,9 @@ const productColumns = ref([])
     <Header />
     <div class="wrapper flow">
       <div class="editable-text">
-        <EditableText :initialText="showdownName" 
+        <EditableText
+          v-if="props.guid"
+        :initialText="showdownName" 
           @textChanged="showdownNameUpdated"
         />
       </div>
@@ -157,6 +159,7 @@ const productColumns = ref([])
             />
         </div>
       <EmptyProductColumn 
+      v-if="props.guid"
         @championAdded="championAdded"
       />
       </div>

@@ -11,8 +11,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'championAdded'])
 
-const name = ref('')
-const imageUrl = ref('')
+const url = ref('')
 
 const close = () => {
   emit('close')
@@ -21,10 +20,15 @@ const close = () => {
 const add = () => {
   console.log('add')
 
-  emit('championAdded', {
-    name: name.value,
-    imageUrl: imageUrl.value
-  })
+  //call scrape url lambda function
+
+  /// extract data from url
+  ///show a loading indicator
+
+  // emit('championAdded', {
+  //   name,
+  //   imageUrl,
+  // })
 }
 
 const clickDialog = (e) => {
@@ -34,31 +38,20 @@ const clickDialog = (e) => {
 
 <template>
   <div class="dialog" @click="close" v-if="isOpen">
-    <div class="dialog-content" 
-    @click="clickDialog"
-    @keyup.enter="add"
-    @keyup.esc="close"
-    
-    >
+    <div class="dialog-content" @click="clickDialog" @keyup.enter="add" @keyup.esc="close">
       <div class="header">
-        <h2>
-        Add your champion
-        </h2>
+        <h2>Add your champion</h2>
+      </div>
+      <div class="body">
+        <div class="input-field">
+          <p>Url:</p>
+          <input class="input" type="text" v-model="url" />
         </div>
-        <div class="body">
-          <div class="input-field">
-            <p>Name:</p>
-            <input class="input" type="text" v-model="name" />
-          </div>
-          <div class="input-field">
-            <p>Image Url:</p>
-            <input class="input" type="text" v-model="imageUrl" />
-          </div>
-        </div>
-        <div class="footer">
-          <button class="button close-button" @click="close">Close</button>
-          <button class="button add-button" type="submit" @click="add">Add</button>
-        </div>
+      </div>
+      <div class="footer">
+        <button class="button close-button" @click="close">Close</button>
+        <button class="button add-button" type="submit" @click="add">Add</button>
+      </div>
     </div>
   </div>
 </template>
@@ -82,7 +75,7 @@ const clickDialog = (e) => {
 
 .input-field {
   display: grid;
-  grid-template-columns: 8rem 2fr;
+  grid-template-columns: 4rem 2fr;
 }
 
 .dialog-content {

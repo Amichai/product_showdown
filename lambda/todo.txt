@@ -23,3 +23,8 @@ Battle
 
 
  https://martinfowler.com/articles/building-boba.html#templated-prompt
+
+
+zip -r lambdaFunc.zip .; aws lambda update-function-code --function-name ProductShowdown_url_parser --zip-file fileb:///Users/amichailevy/Documents/spikes/ProductBattle/lambda/lambdaFunc.zip
+
+ProductShowdown_url_parser

@@ -28,3 +28,10 @@ Battle
 zip -r lambdaFunc.zip .; aws lambda update-function-code --function-name ProductShowdown_url_parser --zip-file fileb:///Users/amichailevy/Documents/spikes/ProductBattle/lambda/lambdaFunc.zip
 
 ProductShowdown_url_parser
+
+
+https://d3m3obojumjrb8.cloudfront.net/458db2d1-22f8-49cf-a000-b9d2502e5fc2
+
+
+----
+Add timestamps to product battle table

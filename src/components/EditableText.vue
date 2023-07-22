@@ -96,6 +96,7 @@
 
 .text-label {
   min-height: 1em;
+  text-align: center;
   
 }
 </style>

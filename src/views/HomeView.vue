@@ -110,9 +110,9 @@ const featureAdded = (feature, targetIdx) => {
 }
 
 const championAdded = (champion) => {
-  productColumns.value.push({
-    url: '123',
-    name: champion.name,
+  const newColumn = {
+    url: champion.url,
+    name: champion.features.name,
     img: champion.imageUrl,
     features: featureOrder.value.map((feature, index) => {
       return {
@@ -121,7 +121,39 @@ const championAdded = (champion) => {
         value: ''
       }
     })
-  })
+  }
+
+  for(const [key, value] of Object.entries(champion.features)) {
+    if (key === 'name') {
+      continue
+    }
+
+    if(featureOrder.value.includes(key)) {
+      newColumn.features.forEach((feature) => {
+        if (feature.key === key) {
+          feature.value = value
+        }
+      })
+    } else {
+      for (const column of productColumns.value) {
+        column.features.push({
+          id: column.features.length,
+          key: key,
+          value: ''
+        })
+      }
+
+      newColumn.features.push({
+        id: newColumn.features.length,
+        key: key,
+        value: value
+      })
+
+      featureOrder.value.push(key)
+    }
+  }
+
+  productColumns.value.push(newColumn)
 
   updateShowdown(props.guid, showdownName.value, productColumns.value, featureOrder.value)
 }

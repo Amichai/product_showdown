@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import draggable from 'vuedraggable'
 import EditableText from '../components/EditableText.vue'
 import ProductFeature from '../components/ProductFeature.vue'
@@ -14,6 +14,11 @@ const props = defineProps({
     type: Array,
     required: true
   }
+})
+
+onMounted(() => {
+  console.log("PRODUCT COLUMN FEATURES")
+  console.log(props.features)
 })
 
 const emit = defineEmits(['orderChanged', 'featureChanged', 'deleteColumn', 'featureAdded', 'featureDeleted'])

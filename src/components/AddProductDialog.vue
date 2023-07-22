@@ -1,6 +1,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { postShowdownUrl } from '../apiHelper'
 
 const props = defineProps({
   isOpen: {
@@ -17,18 +18,18 @@ const close = () => {
   emit('close')
 }
 
-const add = () => {
+const add = async () => {
   console.log('add')
+  const result = await postShowdownUrl(url.value)
+  console.log("----")
 
-  //call scrape url lambda function
+  const body = JSON.parse(result.body)
 
-  /// extract data from url
-  ///show a loading indicator
-
-  // emit('championAdded', {
-  //   name,
-  //   imageUrl,
-  // })
+  emit('championAdded', {
+    features: JSON.parse(body.features),
+    imageUrl: body.imageUrl,
+    url: url.value
+  })
 }
 
 const clickDialog = (e) => {

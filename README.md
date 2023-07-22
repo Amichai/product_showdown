@@ -42,3 +42,5 @@ zip -r lambdaFunc.zip .; aws lambda update-function-code --function-name AIBookW
 
 
  amplify publish
+
+ https://d3m3obojumjrb8.cloudfront.net/458db2d1-22f8-49cf-a000-b9d2502e5fc2

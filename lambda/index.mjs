@@ -159,6 +159,82 @@ export const handler = async (event) => {
 };
 
 
+const tags = ['html', 
+'head', 'body', 'section', 'main',
+'div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'ul', 'ol', 'dl', 'dt', 'dd', 'table', 'tr', 'td'];
+
+
+
+const htmlToObj = (element) => {
+  // Base case: if it's a text node, return its value
+  if (element.type === 'text') return element.data.trim();
+
+  if (!tags.includes(element.name)) return null;
+
+  let node = {};
+
+  // Get tag name
+  node.tag = element.name;
+
+  // Get attributes
+  // if (Object.keys(element.attribs).length > 0) {
+  //   node.attr = element.attribs;
+  // }
+
+  // Get children
+  if (element.children.length > 0) {
+    node.children = element.children
+      .filter((child) => child.type === 'tag' || child.type === 'text' && child.data.trim() !== '')
+      .map((child) => htmlToObj(child))
+      .filter((child) => child !== null);;
+  }
+
+  if(!node?.children?.length){
+    delete node.children;
+
+    return null;
+  }
+
+
+
+  return node;
+};
+
+
+const scrapeWebsiteTest = async () => {
+  // const url = 'https://www.apple.com/iphone-14-pro/specs/'
+  const url = 'https://www.codeofbell.com/products/x-type-backpack?variant=44078938652990'
+  const response = await axios.get(url);
+
+    const $ = cheerio.load(response.data);
+
+    const yamlObj = $('html').toArray().map((element) => htmlToObj(element));
+
+    // let allDivs = ''
+    // $('main').find('div').each((i, element) => {
+    //   const text = $(element).text().trim();
+    //   allDivs += text
+    //   console.log(`${text.length} - ${text}`)
+    // })
+
+    console.log(JSON.stringify(yamlObj))
+    
+    // console.log($.html());
+    // const justDivs = cheerio.load(allDivs).text()
+
+    // console.log(justDivs)
+
+    // const main = $('main').text()
+    //     .replace(/\s+/g, ' ')
+    //     .slice(0, 3000);
+
+    // console.log(main)
+    // console.log('------------------')
+}
+
+
+await scrapeWebsiteTest()
+
 // await handler({url: 'https://www.apple.com/iphone-14-pro/specs/'})
 
 
